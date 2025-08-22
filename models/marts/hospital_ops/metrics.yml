@@ -1,0 +1,29 @@
+version: 2
+
+metrics:
+  - name: total_admissions
+    label: Total Admissions
+    model: ref('fct_admissions')
+    description: Count of all hospital admissions.
+    calculation_method: count
+    expression: admission_id
+    timestamp: admit_date
+    time_grains: [day, week, month, quarter, year]
+
+  - name: avg_length_of_stay
+    label: Average Length of Stay
+    model: ref('fct_admissions')
+    description: Average number of days a patient is admitted.
+    calculation_method: average
+    expression: length_of_stay
+    timestamp: admit_date
+    time_grains: [day, week, month, quarter, year]
+
+  - name: readmission_rate
+    label: Readmission Rate
+    model: ref('fct_admissions')
+    description: Percentage of admissions that occurred within 30 days of a previous discharge.
+    calculation_method: average
+    expression: readmission_flag
+    timestamp: admit_date
+    time_grains: [month, quarter, year]

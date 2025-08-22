@@ -1,0 +1,36 @@
+version: 2
+
+models:
+  - name: stg_patients
+    description: Staging model for patient demographics
+    columns:
+      - name: patient_id
+        description: Unique patient identifier
+        tests: [not_null, unique]
+      - name: gender
+        description: Patient gender (M/F)
+        tests:
+          - accepted_values:
+              values: ['M', 'F']
+      - name: birthdate
+        description: Date of birth
+        tests: [not_null]
+
+  - name: stg_providers
+    description: Staging model for healthcare providers
+    columns:
+      - name: provider_id
+        description: Unique provider identifier
+        tests: [not_null, unique]
+      - name: specialty
+        description: Medical specialty of the provider
+        tests:
+          - accepted_values:
+              values: ["Internal Medicine", "Emergency", "Cardiology", "Pediatrics", "Orthopedics"]
+
+  - name: stg_locations
+    description: Staging model for facility and location data
+    columns:
+      - name: location_id
+        description: Unique location identifier
+        tests: [not_null, unique]
