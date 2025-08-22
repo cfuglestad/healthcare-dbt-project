@@ -1,15 +1,19 @@
-Welcome to your new dbt project!
+# Healthcare dbt — Readmissions & Encounters
 
-### Using the starter project
+Clean, tested dbt project for healthcare analytics. Models EHR encounters into semantic layers and derives **30-day readmission labels**, with CI and auto-published **dbt docs** (lineage graph).
 
-Try running the following commands:
-- dbt run
-- dbt test
+## Why it matters
+Avoidable readmissions impact quality metrics and cost. A trustworthy semantic layer enables analytics and downstream ML.
 
+## What’s inside
+- Sources → Staging → Intermediate → Marts
+- Freshness checks & tests
+- CI (dbt build) + **Docs** published to GitHub Pages
 
-### Resources:
-- Learn more about dbt [in the docs](https://docs.getdbt.com/docs/introduction)
-- Check out [Discourse](https://discourse.getdbt.com/) for commonly asked questions and answers
-- Join the [chat](https://community.getdbt.com/) on Slack for live discussions and support
-- Find [dbt events](https://events.getdbt.com) near you
-- Check out [the blog](https://blog.getdbt.com/) for the latest news on dbt's development and best practices
+## Quick start (DuckDB demo)
+```bash
+pip install dbt-core dbt-duckdb
+dbt deps
+dbt build
+dbt docs generate
+dbt docs serve
