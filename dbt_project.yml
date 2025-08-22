@@ -1,0 +1,69 @@
+
+name: 'healthcare_dbt'
+version: '1.0.0'
+
+profile: 'healthcare_dbt'
+
+model-paths: ["models"]
+analysis-paths: ["analyses"]
+test-paths: ["tests"]
+seed-paths: ["seeds"]
+macro-paths: ["macros"]
+snapshot-paths: ["snapshots"]
+
+clean-targets:
+  - "target"
+  - "dbt_packages"
+
+models:
+  +materialized: view
+  healthcare_dbt:
+    staging:
+      +materialized: view
+    intermediate:
+      +materialized: table
+    marts:
+      +materialized: table
+      +tags: ["portfolio","published"]
+
+seeds:
+  healthcare_dbt:
+    providers:
+      +quote_columns: false
+      column_types:
+        provider_id: string
+        name: string
+        specialty: string
+        npi: string
+    patients:
+      +quote_columns: false
+      column_types:
+        patient_id: string
+        first_name: string
+        last_name: string
+        birthdate: date
+        gender: string
+        race: string
+        zip: string
+    locations:
+      +quote_columns: false
+      column_types:
+        location_id: string
+        facility_name: string
+        unit: string
+        city: string
+        state: string
+    admissions:
+      +quote_columns: false
+      column_types:
+        admission_id: string
+        patient_id: string
+        provider_id: string
+        location_id: string
+        admit_date: date
+        discharge_date: date
+        length_of_stay: integer
+        admission_type: string
+
+  tests:
+    +store_failures: true
