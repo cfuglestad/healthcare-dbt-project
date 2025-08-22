@@ -28,7 +28,7 @@ jobs:
         run: |
           mkdir -p ./.profiles
           cat > ./.profiles/profiles.yml <<'YML'
-          healthcare:
+          healthcare_dbt:
             target: dev
             outputs:
               dev:
