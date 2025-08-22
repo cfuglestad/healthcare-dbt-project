@@ -1,0 +1,58 @@
+version: 2
+
+seeds:
+  - name: patients
+    description: Synthetic patient demographic data
+    config:
+      column_types:
+        patient_id: string
+        first_name: string
+        last_name: string
+        birthdate: date
+        gender: string
+        race: string
+        zip: string
+    columns:
+      - name: patient_id
+        description: Unique patient identifier
+
+  - name: providers
+    description: Synthetic provider details including specialty and NPI
+    config:
+      column_types:
+        provider_id: string
+        name: string
+        specialty: string
+        npi: string
+    columns:
+      - name: provider_id
+        description: Unique provider identifier
+
+  - name: locations
+    description: Synthetic facility and unit location data
+    config:
+      column_types:
+        location_id: string
+        facility_name: string
+        unit: string
+        city: string
+        state: string
+    columns:
+      - name: location_id
+        description: Unique facility/unit identifier
+
+  - name: admissions
+    description: Synthetic admissions fact table representing patient encounters
+    config:
+      column_types:
+        admission_id: string
+        patient_id: string
+        provider_id: string
+        location_id: string
+        admit_date: date
+        discharge_date: date
+        length_of_stay: integer
+        admission_type: string
+    columns:
+      - name: admission_id
+        description: Unique admission encounter ID

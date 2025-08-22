@@ -1,0 +1,11 @@
+location_id,facility_name,unit,city,state
+LOC001,Port Samantha Medical Center,Med-Surg,Jeanettechester,TN
+LOC002,Lisabury Medical Center,Med-Surg,West Corey,VA
+LOC003,Port Susan Medical Center,Med-Surg,East Brittany,OK
+LOC004,Holmesburgh Medical Center,ICU,Danielburgh,OH
+LOC005,Lake Thomasshire Medical Center,Med-Surg,Thomasland,OR
+LOC006,West Kimberly Medical Center,ED,South Lauren,MD
+LOC007,South Brian Medical Center,Radiology,West Amanda,KY
+LOC008,Lake Elizabeth Medical Center,ICU,Sarahfurt,IN
+LOC009,Ortizton Medical Center,Radiology,East Josephchester,CO
+LOC010,Juarezshire Medical Center,Med-Surg,Port Davidburgh,NH
