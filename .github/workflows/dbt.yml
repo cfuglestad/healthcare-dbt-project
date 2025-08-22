@@ -1,0 +1,47 @@
+name: dbt build & docs
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      DBT_PROFILES_DIR: ./.profiles
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.11" }
+      - run: pip install dbt-core dbt-duckdb dbt-utils
+      - name: Create dbt profile (DuckDB)
+        run: |
+          mkdir -p ./.profiles
+          cat > ./.profiles/profiles.yml <<'YML'
+          healthcare:
+            target: dev
+            outputs:
+              dev:
+                type: duckdb
+                path: "ci.duckdb"
+          YML
+      - run: dbt deps
+      - run: dbt build --fail-fast
+      - name: Generate docs
+        run: dbt docs generate --target-path docs
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: docs
+
+  deploy-pages:
+    needs: build
+    if: github.ref == 'refs/heads/main'
+    permissions:
+      pages: write
+      id-token: write
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to GitHub Pages
+        uses: actions/deploy-pages@v4
