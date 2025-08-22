@@ -6,14 +6,17 @@ models:
     columns:
       - name: patient_id
         description: Unique identifier for each patient.
-        tests: [not_null, unique]
+        tests:
+          - not_null
+          - unique
       - name: first_name
         description: Patient first name (lowercased).
       - name: last_name
         description: Patient last name (lowercased).
       - name: birthdate
         description: Date of birth.
-        tests: [not_null]
+        tests:
+          - not_null
       - name: gender
         description: Gender (M or F).
         tests:
@@ -29,7 +32,9 @@ models:
     columns:
       - name: provider_id
         description: Unique identifier for the provider.
-        tests: [not_null, unique]
+        tests:
+          - not_null
+          - unique
       - name: provider_name
         description: Full name of the provider.
       - name: specialty
@@ -45,7 +50,9 @@ models:
     columns:
       - name: location_id
         description: Unique identifier for the location.
-        tests: [not_null, unique]
+        tests:
+          - not_null
+          - unique
       - name: facility_name
         description: Name of the medical facility.
       - name: unit
@@ -63,54 +70,74 @@ models:
     columns:
       - name: admission_id
         description: Unique identifier for the admission event.
-        tests: [not_null, unique]
+        tests:
+          - not_null
+          - unique
           - no_overlapping_admissions:
               patient_id_col: patient_id
               admit_col: admit_date
               discharge_col: discharge_date
+
       - name: admit_date
         description: Date of hospital admission.
-        tests: [not_null]
+        tests:
+          - not_null
+
       - name: discharge_date
         description: Date of hospital discharge.
-        tests: [not_null]
+        tests:
+          - not_null
           - discharge_after_admit:
               admit_col: admit_date
               discharge_col: discharge_date
+
       - name: length_of_stay
         description: Number of days between admission and discharge.
-        tests: [not_null]
+        tests:
+          - not_null
+
       - name: admission_type
         description: Classification of the admission event.
         tests:
           - accepted_values:
               values: ["Emergency", "Elective", "Urgent"]
+
       - name: stay_category
         description: Categorized length of stay (Short, Medium, Long).
         tests:
           - accepted_values:
               values: ["Short", "Medium", "Long"]
+
       - name: admission_number
         description: Sequential number of the admission per patient.
-        tests: [not_null]
+        tests:
+          - not_null
+
       - name: days_since_last_admission
         description: Days between this admission and previous discharge for the same patient.
+
       - name: readmission_flag
         description: 1 if admitted within 30 days of previous discharge, else 0.
         tests:
           - accepted_values:
               values: [0, 1]
+
       - name: patient_id
         description: Foreign key to dim_patients.
-        tests: [not_null]
+        tests:
+          - not_null
           - fact_references_dimension:
               fact_model: fct_admissions
               dim_model: dim_patients
               fact_key: patient_id
               dim_key: patient_id
+
       - name: provider_id
         description: Foreign key to dim_providers.
-        tests: [not_null]
+        tests:
+          - not_null
+
       - name: location_id
         description: Foreign key to dim_locations.
-        tests: [not_null]
+        tests:
+          - not_null
