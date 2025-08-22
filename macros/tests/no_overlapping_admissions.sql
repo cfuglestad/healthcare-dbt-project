@@ -1,23 +1,26 @@
 {% test no_overlapping_admissions(model, column_name, patient_id_col, admit_col, discharge_col) %}
--- Fails if any two admissions for the same patient overlap.
--- Overlap when: A.start < B.end  AND  A.end > B.start
--- We avoid self/dupe pairs by forcing A.start < B.start.
+-- Fails if any patient has two admissions that overlap:
+-- i.e., the next admission starts before the current one is discharged.
 
-with base as (
-    select * from {{ model }}
-),
-overlaps as (
+with ordered as (
     select
-        a.{{ patient_id_col }} as patient_id,
-        a.{{ admit_col }}      as a_start,
-        a.{{ discharge_col }}  as a_end,
-        b.{{ admit_col }}      as b_start,
-        b.{{ discharge_col }}  as b_end
-    from base a
-    join base b
-      on a.{{ patient_id_col }} = b.{{ patient_id_col }}
-     and a.{{ admit_col }} <  b.{{ admit_col }}
-     and a.{{ discharge_col }} > b.{{ admit_col }}
+        {{ patient_id_col }}          as patient_id,
+        {{ admit_col }}               as admit_ts,
+        {{ discharge_col }}           as discharge_ts,
+        lead({{ admit_col }}) over (
+            partition by {{ patient_id_col }}
+            order by {{ admit_col }}, {{ discharge_col }}
+        )                             as next_admit_ts
+    from {{ model }}
+    where {{ admit_col }} is not null
+      and {{ discharge_col }} is not null
+),
+violations as (
+    select *
+    from ordered
+    where next_admit_ts is not null
+      and next_admit_ts < discharge_ts   -- overlap condition
 )
-select * from overlaps
+
+select * from violations
 {% endtest %}
