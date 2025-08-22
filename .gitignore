@@ -1,0 +1,20 @@
+# dbt
+target/
+dbt_packages/
+logs/
+.env
+profiles.yml
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# OS/Editors
+.DS_Store
+.vscode/
+.idea/
+
+# Local DBs
+*.duckdb
