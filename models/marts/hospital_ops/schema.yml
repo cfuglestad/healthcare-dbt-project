@@ -77,7 +77,8 @@ models:
               patient_id_col: patient_id
               admit_col: admit_date
               discharge_col: discharge_date
-            severity: warn
+              config:
+                severity: warn
 
       - name: admit_date
         description: Date of hospital admission.
@@ -142,4 +143,5 @@ models:
         description: Foreign key to dim_locations.
         tests:
           - not_null
+
 
